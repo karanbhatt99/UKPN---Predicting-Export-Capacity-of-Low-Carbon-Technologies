@@ -1,6 +1,6 @@
 # UKPN - Predicting Export Capacity of Low Carbon Technologies
 
-# Introduction
+## Introduction
 As the UK transitions to a low-carbon energy future, the number of Low Carbon Technologies (LCT) installations is growing rapidly. These include:
 
 Solar PV
@@ -23,7 +23,7 @@ Support renewable energy integration
 
 This project builds a machine learning model to predict the Export capacity of new LCT installations, based on installation attributes.
 
-# Business Problem
+## Business Problem
 Goal:
 Given the attributes of a new LCT installation, predict the expected Export capacity (in kW).
 
@@ -37,7 +37,7 @@ Prioritize infrastructure investments
 
 Manage risk areas where the model is less certain
 
-# Dataset Overview
+## Dataset Overview
 The project uses the UKPN Low Carbon Technologies Secondary dataset, which includes:
 
 Installation attributes: Category, Type, LicenceArea, LocalAuthority
@@ -60,7 +60,7 @@ LCT_Connections — Number of LCT connections
 
 Export — Target variable (kW exported back to grid)
 
-# Approach
+## Approach
 1. Data Exploration & Understanding
 Performed Exploratory Data Analysis (EDA) to understand:
 
@@ -98,7 +98,7 @@ Root Mean Squared Error (RMSE)
 
 Mean Absolute Error (MAE)
 
-# Results
+## Results
 Model Comparison
 Model	CV Mean RMSE	CV Std RMSE	Test RMSE	Test MAE
 Linear Regression	19.86	1.95	12.89	6.93
@@ -116,7 +116,7 @@ It captures complex non-linear relationships between features and Export
 
 The model predicts Export capacity with an average error of approximately 6.26 kW on unseen test data.
 
-# Key Insights from Dataset
+## Key Insights from Dataset
 Export capacity is strongly driven by:
 
 Category — Generation installations (especially Solar PV) contribute the most Export
@@ -137,7 +137,7 @@ LCT_Connections is a reliable predictor of Export scaling
 
 There is some variability at the LocalAuthority level which could be further explored or modeled
 
-# Business Value
+## Business Value
 The model allows DNO planners to:
 
 Forecast grid contributions from new LCT installations
@@ -150,7 +150,7 @@ Support renewable integration strategies
 
 Quantify risk by highlighting regions where predictions are less certain
 
-# Visualizations
+## Visualizations
 Export Distribution:
 outputs/visualizations/export_distribution.png
 
@@ -169,7 +169,7 @@ outputs/visualizations/residuals_distribution.png
 Local Authorities with Highest Errors:
 outputs/visualizations/local_authority_errors.png
 
-# Project Pipeline
+## Project Pipeline
 Deep EDA
 
 Data Cleaning & Feature Engineering
@@ -182,6 +182,6 @@ Final Predictions on Test Set
 
 Stakeholder-ready visualizations
 
-# Credits
+## Credits
 Dataset: UKPN Open Data
 
