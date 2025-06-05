@@ -1,6 +1,7 @@
 UKPN - Predicting Export Capacity of Low Carbon Technologies
-🌍 Introduction
-As the UK transitions to a low-carbon energy future, the number of Low Carbon Technologies (LCT) being installed on the grid is growing rapidly — including:
+
+# Introduction
+As the UK transitions to a low-carbon energy future, the number of Low Carbon Technologies (LCT) installations is growing rapidly. These include:
 
 Solar PV
 
@@ -10,114 +11,146 @@ Heat Pumps
 
 Battery Storage
 
-Each installation can contribute Export capacity — energy exported back to the grid.
+Each LCT installation can contribute Export capacity — energy exported back to the grid.
 
-For Distribution Network Operators (DNOs) like UK Power Networks, it is critical to:
+For Distribution Network Operators (DNOs) like UK Power Networks, forecasting future Export capacity is critical to:
 
-✅ Understand how much energy these new technologies will contribute
-✅ Anticipate grid load
-✅ Plan infrastructure upgrades
+Anticipate grid load
+
+Plan infrastructure upgrades
+
+Support renewable energy integration
 
 This project builds a machine learning model to predict the Export capacity of new LCT installations, based on installation attributes.
 
-🎯 Business Problem
-The core business question is:
+# Business Problem
+Goal:
+Given the attributes of a new LCT installation, predict the expected Export capacity (in kW).
 
-“Given the attributes of a new LCT installation, how much Export capacity should we expect?”
+This allows DNO planners to:
 
-By answering this, DNO planners can:
+Forecast Export contributions from future installations
 
-✅ Forecast grid contributions from LCT
-✅ Prioritize network investments
-✅ Identify locations of potential grid stress
+Identify Local Authorities or regions with high expected Export
 
-🛠️ Approach
-1️⃣ Data Exploration & Understanding
+Prioritize infrastructure investments
+
+Manage risk areas where the model is less certain
+
+# Dataset Overview
+The project uses the UKPN Low Carbon Technologies Secondary dataset, which includes:
+
+Installation attributes: Category, Type, LicenceArea, LocalAuthority
+
+Technical attributes: LCT_Connections, Import, Export (target variable)
+
+Location attributes: LocalAuthority
+
+Key columns used in this project:
+
+Category — Generation, EV, Heat Pump, Battery Storage
+
+Type — Solar PV, EV Charger, etc.
+
+LicenceArea — Area of operation
+
+LocalAuthority — Local district
+
+LCT_Connections — Number of LCT connections
+
+Export — Target variable (kW exported back to grid)
+
+# Approach
+1. Data Exploration & Understanding
 Performed Exploratory Data Analysis (EDA) to understand:
 
-Distribution of Export capacity → right-skewed with outliers
+Distribution of Export capacity (skewed with long right tail)
 
-Key drivers of Export:
+Correlations between features and Export
 
-Category (Generation dominates)
+Impact of Category and Type on Export
 
-Type (Solar PV → highest Export)
+Identification of outliers and data quality issues
 
-LCT_Connections → strong correlation with Export
+This helped guide feature engineering and model selection.
 
-Why?
-→ Understand data quality
-→ Guide feature selection
-→ Anticipate modeling challenges (skew, outliers)
-
-2️⃣ Data Cleaning & Feature Engineering
-Dropped unused columns (non-predictive / high cardinality)
+2. Data Cleaning & Feature Engineering
+Dropped non-predictive columns (location codes, empty columns)
 
 One-Hot Encoded categorical variables
 
-Why?
-→ Ensure models can effectively handle categorical data
-→ Avoid overfitting on sparse features
+Standardized processing pipeline for training and prediction
 
-3️⃣ Model Selection
-Compared 3 models:
+3. Model Selection
+Three models were compared:
 
-Model	Why I chose it
-Linear Regression	Baseline model — easy to interpret
+Model	Reason for Selection
+Linear Regression	Simple, interpretable baseline
 Random Forest	Captures non-linear relationships, robust to outliers
-XGBoost	State-of-the-art for tabular data, handles skewed targets, highly tunable
+XGBoost	State-of-the-art model for tabular data, handles skew and interactions well
 
-Why this is relevant:
-Export capacity is driven by complex interactions (Category, Type, Location, LCT_Connections).
-We need models that can capture non-linearity and handle skew — XGBoost is ideal for this.
+4. Validation Strategy
+5-Fold Cross Validation used to assess model stability
 
-4️⃣ Validation Strategy
-Used 5-Fold Cross Validation to ensure model stability
-
-Evaluated on unseen test set using:
+Final performance evaluated on a held-out test set using:
 
 Root Mean Squared Error (RMSE)
 
 Mean Absolute Error (MAE)
 
-Why this is relevant:
-→ To avoid overfitting
-→ To provide a realistic estimate of model performance
-→ Business users want to know: “How accurate is this model on new data?”
-
-📈 Results
-Model Comparison:
-
+# Results
+Model Comparison
 Model	CV Mean RMSE	CV Std RMSE	Test RMSE	Test MAE
 Linear Regression	19.86	1.95	12.89	6.93
 Random Forest	20.55	1.85	15.02	6.93
 XGBoost	19.96	1.98	13.72	6.26
 
 Final Model: XGBoost
-Why?
+XGBoost was selected as the final model because:
 
-✅ Most robust to skewed Export distribution
-✅ Lowest Mean Absolute Error → key for business usability
-✅ Captures non-linear effects between Category, Type, and LCT_Connections
+It provides the lowest Mean Absolute Error (MAE), which is most useful for business users
 
-🔍 Key Insights
-✅ Export capacity is primarily driven by:
+It handles the skewed distribution of Export well
 
-Category (Generation → highest Export)
+It captures complex non-linear relationships between features and Export
 
-Type (Solar PV → dominant)
+The model predicts Export capacity with an average error of approximately 6.26 kW on unseen test data.
 
-LCT Connections (higher → more Export)
+# Key Insights from Dataset
+Export capacity is strongly driven by:
 
-✅ XGBoost predicts Export with average error ~6.26 kW — highly usable for:
+Category — Generation installations (especially Solar PV) contribute the most Export
 
-Grid planning
+Type — Solar PV is the dominant source of Export
 
-Forecasting aggregate Export by region
+LCT_Connections — Higher number of connections generally correlates with higher Export
 
-Prioritizing infrastructure upgrades
+LocalAuthority-level analysis:
 
-📊 Visualizations
+Some LocalAuthorities have higher variance in Export, suggesting regional differences in technology adoption and installation practices.
+
+The dataset suggests that:
+
+Future Export growth will continue to be led by Generation/Solar PV
+
+LCT_Connections is a reliable predictor of Export scaling
+
+There is some variability at the LocalAuthority level which could be further explored or modeled
+
+# Business Value
+The model allows DNO planners to:
+
+Forecast grid contributions from new LCT installations
+
+Inform capacity planning and investment decisions
+
+Identify potential grid stress points
+
+Support renewable integration strategies
+
+Quantify risk by highlighting regions where predictions are less certain
+
+# Visualizations
 Export Distribution
 outputs/visualizations/export_distribution.png
 
@@ -136,8 +169,19 @@ outputs/visualizations/residuals_distribution.png
 Local Authorities with Highest Errors
 outputs/visualizations/local_authority_errors.png
 
-🚀 Business Value
-✅ Enable data-driven grid forecasting
-✅ Help planners estimate Export from future LCT installations
-✅ Identify risk areas for further analysis
-✅ Support strategic investment decisions
+# Project Pipeline
+Deep EDA
+
+Data Cleaning & Feature Engineering
+
+Model Training & Comparison
+
+5-Fold Cross Validation
+
+Final Predictions on Test Set
+
+Stakeholder-ready visualizations
+
+# Credits
+Dataset: UKPN Open Data
+
