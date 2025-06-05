@@ -151,22 +151,22 @@ Support renewable integration strategies
 Quantify risk by highlighting regions where predictions are less certain
 
 # Visualizations
-Export Distribution
+Export Distribution:
 outputs/visualizations/export_distribution.png
 
-Export vs Category
+Export vs Category:
 outputs/visualizations/export_vs_category.png
 
-Correlation Heatmap
+Correlation Heatmap:
 outputs/visualizations/correlation_heatmap.png
 
-True Export vs Predicted Export
+True Export vs Predicted Export:
 outputs/visualizations/true_vs_predicted.png
 
-Residuals Distribution
+Residuals Distribution:
 outputs/visualizations/residuals_distribution.png
 
-Local Authorities with Highest Errors
+Local Authorities with Highest Errors:
 outputs/visualizations/local_authority_errors.png
 
 # Project Pipeline
